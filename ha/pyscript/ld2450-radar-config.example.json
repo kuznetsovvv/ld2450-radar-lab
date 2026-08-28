@@ -1,0 +1,48 @@
+{
+  "schema": "ld2450-radar-config/1",
+  "coordinate_units": "mm",
+  "time_units": "s",
+  "tracker": {
+    "gate_mm": 700.0,
+    "max_coast_s": 1.25,
+    "measurement_sigma_mm": 120.0,
+    "acceleration_sigma_mm_s2": 900.0,
+    "initial_position_sigma_mm": 250.0,
+    "initial_velocity_sigma_mm_s": 1400.0,
+    "min_confirmed_hits": 3
+  },
+  "classifier": {
+    "endpoint_points": 3,
+    "min_span_mm": 500.0
+  },
+  "portals": [
+    {
+      "name": "ENTRY",
+      "shape": "box",
+      "min_x_mm": -350.0,
+      "max_x_mm": 350.0,
+      "min_y_mm": 150.0,
+      "max_y_mm": 650.0
+    },
+    {
+      "name": "LEFT_HALL",
+      "shape": "sector",
+      "min_range_mm": 1200.0,
+      "max_range_mm": 2400.0,
+      "near_min_angle_deg": -58.0,
+      "near_max_angle_deg": -30.0,
+      "far_min_angle_deg": -58.0,
+      "far_max_angle_deg": -30.0
+    },
+    {
+      "name": "RIGHT_HALL",
+      "shape": "sector",
+      "min_range_mm": 1200.0,
+      "max_range_mm": 2400.0,
+      "near_min_angle_deg": 30.0,
+      "near_max_angle_deg": 58.0,
+      "far_min_angle_deg": 30.0,
+      "far_max_angle_deg": 58.0
+    }
+  ]
+}

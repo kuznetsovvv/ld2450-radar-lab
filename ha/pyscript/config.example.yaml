@@ -1,0 +1,6 @@
+apps:
+  ld2450_radar:
+    frame_entity: sensor.ld2450_atomic_frame
+    config_path: /config/pyscript/ld2450-radar-config.json
+    event_entity: pyscript.ld2450_radar_event
+    event_name: ld2450_radar_event

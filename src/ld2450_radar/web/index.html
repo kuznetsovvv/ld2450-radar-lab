@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LD2450 Radar Lab</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <p class="eyebrow">LD2450 / SYNTHETIC WORKBENCH</p>
+      <h1>Radar Lab</h1>
+    </div>
+    <div class="top-actions">
+      <span id="status" class="status">Loading</span>
+      <button id="reset" class="button secondary" type="button">Reset</button>
+      <button id="download" class="button primary" type="button">Download config</button>
+    </div>
+  </header>
+
+  <main class="workspace">
+    <section class="canvas-band" aria-label="Radar trajectory view">
+      <div class="canvas-toolbar">
+        <div class="legend">
+          <span><i class="dot raw"></i>raw</span>
+          <span><i class="line filtered"></i>Kalman</span>
+          <span><i class="dot start"></i>origin</span>
+          <span><i class="dot end"></i>destination</span>
+        </div>
+        <label class="toggle"><input id="show-raw" type="checkbox" checked> Raw fixes</label>
+        <label class="toggle"><input id="show-filtered" type="checkbox" checked> Filtered tracks</label>
+      </div>
+      <div class="dataset-toolbar">
+        <div class="dataset-name">
+          <span>SOURCE</span>
+          <strong id="source-name">Synthetic demo</strong>
+          <small id="source-meta"></small>
+        </div>
+        <div class="dataset-actions">
+          <input id="frame-file" type="file" accept=".csv,text/csv" hidden>
+          <button id="load-frames" class="button secondary" type="button">Load atomic CSV</button>
+          <button id="use-demo" class="button secondary" type="button">Use synthetic</button>
+        </div>
+      </div>
+      <svg id="radar" viewBox="-2600 -2600 5200 5200" role="img" aria-label="Synthetic radar tracks and portals inside the LD2450 120 degree field of view"></svg>
+      <div class="stats" id="stats"></div>
+    </section>
+
+    <aside class="controls" aria-label="Tuning controls">
+      <nav class="tabs" aria-label="Lab views">
+        <button class="tab active" data-tab="tracker" type="button">Tracker</button>
+        <button class="tab" data-tab="portals" type="button">Portals</button>
+        <button class="tab" data-tab="view" type="button">View</button>
+        <button class="tab" data-tab="results" type="button">Results</button>
+      </nav>
+
+      <div id="tracker-panel" class="panel active">
+        <h2>CV Kalman + assignment</h2>
+        <p class="muted">Defaults assume millimetres, seconds, and roughly 5 Hz observations.</p>
+        <div id="tracker-controls" class="control-list"></div>
+        <h3>Classifier</h3>
+        <div id="classifier-controls" class="control-list"></div>
+      </div>
+
+      <div id="portals-panel" class="panel">
+        <h2>Manual O-D portals</h2>
+        <p class="muted">Tune synthetic geometry here. Real room coordinates stay local.</p>
+        <div id="portal-controls" class="portal-list"></div>
+      </div>
+
+      <div id="view-panel" class="panel">
+        <h2>Mounting view</h2>
+        <div class="view-presets" role="group" aria-label="View rotation presets">
+          <button type="button" data-view-rotation="0" title="Boresight points up">0°</button>
+          <button type="button" data-view-rotation="90" title="Boresight points right">+90°</button>
+          <button type="button" data-view-rotation="-90" title="Boresight points left">-90°</button>
+          <button type="button" data-view-rotation="180" title="Boresight points down">180°</button>
+        </div>
+        <div class="view-control">
+          <label for="view-rotation">Rotation</label>
+          <input id="view-rotation" type="range" min="-180" max="180" step="1">
+          <output id="view-rotation-value" for="view-rotation"></output>
+        </div>
+        <div class="view-control">
+          <label for="view-offset-x">Pan X</label>
+          <input id="view-offset-x" type="range" min="-1500" max="1500" step="25">
+          <output id="view-offset-x-value" for="view-offset-x"></output>
+        </div>
+        <div class="view-control">
+          <label for="view-offset-y">Pan Y</label>
+          <input id="view-offset-y" type="range" min="-1500" max="1500" step="25">
+          <output id="view-offset-y-value" for="view-offset-y"></output>
+        </div>
+        <div class="view-control">
+          <label for="view-range">Range</label>
+          <input id="view-range" type="range" min="1000" max="10000" step="100">
+          <output id="view-range-value" for="view-range"></output>
+        </div>
+        <label class="view-toggle">
+          <input id="view-mirror" type="checkbox">
+          Mirror cross-range
+        </label>
+        <div class="view-buttons">
+          <button id="fit-data" class="button secondary" type="button">Fit data</button>
+          <button id="view-reset" class="button secondary" type="button">Reset view</button>
+        </div>
+      </div>
+
+      <div id="results-panel" class="panel">
+        <h2>O-D labels</h2>
+        <div id="results" class="results"></div>
+        <h3>Contract</h3>
+        <pre id="contract"></pre>
+      </div>
+    </aside>
+  </main>
+
+  <footer>
+    Synthetic data only. Target slots are observations, not identities. Do not use this prototype for safety or access control.
+  </footer>
+  <script src="/app.js"></script>
+</body>
+</html>

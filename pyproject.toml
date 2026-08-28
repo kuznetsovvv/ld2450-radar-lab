@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ld2450-radar-lab"
+version = "0.1.0"
+description = "Dependency-free LD2450 trajectory tracking, portal tuning, and Home Assistant export tools"
+requires-python = ">=3.11"
+license = {text = "MIT"}
+authors = [{name = "kuznetsovvv"}]
+dependencies = []
+
+[project.scripts]
+ld2450-radar-lab = "ld2450_radar.lab:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+ld2450_radar = ["web/*"]

@@ -1,0 +1,17 @@
+- alias: LD2450 O-D event example
+  id: "1770000000000"
+  mode: queued
+  triggers:
+    - trigger: event
+      event_type: ld2450_radar_event
+  conditions:
+    - condition: template
+      value_template: "{{ trigger.event.data.confidence != 'low' }}"
+  actions:
+    - action: logbook.log
+      data:
+        name: LD2450 trajectory
+        message: >-
+          {{ trigger.event.data.label }}
+          ({{ trigger.event.data.reason }},
+          {{ trigger.event.data.point_count }} fixes)
