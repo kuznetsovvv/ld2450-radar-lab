@@ -2,7 +2,7 @@ import json
 import pathlib
 import unittest
 
-from ld2450_radar import RadarConfig
+from ld2450_radar import RadarConfig, demo_csv_text
 
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
@@ -45,6 +45,21 @@ class ArtifactTests(unittest.TestCase):
 
         imports = [line for line in source.splitlines() if line.startswith("import ")]
         self.assertEqual(imports, ["import math"])
+
+    def test_ha_guide_covers_verification_and_rollback(self):
+        text = (ROOT / "docs" / "home-assistant.md").read_text(encoding="utf-8")
+
+        self.assertIn("## Verify before automating", text)
+        self.assertIn("subscribe to `ld2450_radar_event`", text)
+        self.assertIn("## Update and rollback", text)
+        self.assertIn("restore the previous JSON", text)
+
+    def test_downloadable_csv_fixture_matches_the_generator(self):
+        example = (ROOT / "examples" / "synthetic-atomic-frames.csv").read_text(
+            encoding="utf-8"
+        )
+
+        self.assertEqual(demo_csv_text().splitlines(), example.splitlines())
 
 
 if __name__ == "__main__":

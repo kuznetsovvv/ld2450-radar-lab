@@ -37,6 +37,41 @@ Use the `pyscript.ld2450_radar_reload` service after replacing the JSON config.
 The app publishes readiness or configuration errors through
 `pyscript.ld2450_radar_event`.
 
+## Verify before automating
+
+1. Confirm `pyscript.ld2450_radar_event` reports `ready` and its
+   `config_schema` attribute is `ld2450-radar-config/1`.
+2. Open Developer Tools > Events and subscribe to `ld2450_radar_event`.
+3. Walk one complete route between two configured portals, then stop or leave
+   the field long enough for `max_coast_s` to expire.
+4. Inspect the event's `label`, `confidence`, `reason`, `span_mm`, and
+   `point_count`. Repeat both directions and deliberately walk outside a portal;
+   the latter should report low confidence rather than silently guessing.
+5. Add `ha/pyscript/automation.example.yaml` only after the observed events match
+   the intended geometry.
+
+Start with Logbook or a dashboard entity. Add chimes, mobile notifications, or
+other side effects later, with their own cooldowns and confidence conditions.
+
+## Update and rollback
+
+Downloading config does not deploy it automatically:
+
+1. Keep the last known-good JSON file.
+2. Replace `/config/pyscript/ld2450-radar-config.json` with the newly downloaded
+   file.
+3. Call `pyscript.ld2450_radar_reload`.
+4. Confirm the event entity returns to `ready`, then repeat one known route.
+
+If validation or live behavior is wrong, restore the previous JSON and call the
+same reload service. No Home Assistant restart is required. The app constructs a
+new runtime on reload, so active partial tracks are discarded rather than mixed
+across configurations.
+
+To remove the adapter, disable dependent automations, remove its app entry and
+files, then reload Pyscript. The atomic-frame producer and optional CSV logger
+are independent and can remain installed.
+
 ## Event contract
 
 Each completed track fires `ld2450_radar_event` and updates the configured event
@@ -65,6 +100,11 @@ Version 1 confidence is intentionally conservative:
 The example automation logs non-low-confidence events. Chimes, mobile
 notifications, lights, alarms, occupancy state, and cross-sensor corroboration
 belong in separate automations. Do not put those actions inside the tracker.
+
+The adapter belongs in this repository because it is the executable consumer of
+the exported config and event schema. Site policy does not: notification text,
+quiet hours, people, locks, alarms, lights, and escalation rules should live in
+the user's private Home Assistant configuration or in separate generic recipes.
 
 ## Operational notes
 

@@ -10,4 +10,5 @@ build/
 data/private/
 exports/
 *.csv
+!examples/synthetic-atomic-frames.csv
 *.ndjson

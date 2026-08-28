@@ -60,6 +60,16 @@ rollover, and separates ESP reboot epochs. Uploads stay in server memory and are
 not written into this repository. Treat the CSV as movement data and do not
 publish it.
 
+To experiment before installing firmware, click **Load example CSV** or load
+[`examples/synthetic-atomic-frames.csv`](examples/synthetic-atomic-frames.csv)
+manually. Its 44 deterministic rows contain four fictional routes:
+`LEFT_HALL->ENTRY`, `ENTRY->RIGHT_HALL`, `LEFT_HALL->RIGHT_HALL`, and
+`RIGHT_HALL->LEFT_HALL`. The final two run simultaneously: their identities
+swap between densely packed slots 1 and 2, and observations are deliberately
+omitted so association and coasting are visible. Solitary targets remain in
+slot 1, matching observed LD2450 packing. The year-2000 wall clock and all
+coordinates are synthetic.
+
 ### Use the same stream live in Home Assistant
 
 After tuning portals and tracker values, click **Download config** and install
@@ -86,6 +96,11 @@ The included Pyscript adapter consumes the same exported config and emits a
 versioned O-D event plus an entity with confidence and reason attributes. It
 uses Pyscript's local `modules/` support and does not require `allow_all_imports`.
 See [docs/home-assistant.md](docs/home-assistant.md).
+
+That deployment bridge belongs here because it implements these public schemas.
+What happens after an O-D event does not: chimes, rich notifications, locks,
+alarms, lights, and household-specific corroboration remain separate Home
+Assistant policy.
 
 Do not use this prototype for safety, security, or access control.
 

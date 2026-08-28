@@ -69,6 +69,7 @@ class PortalAndContractTests(unittest.TestCase):
                     "LEFT_HALL->ENTRY",
                     "ENTRY->RIGHT_HALL",
                     "LEFT_HALL->RIGHT_HALL",
+                    "RIGHT_HALL->LEFT_HALL",
                 ]
             ),
         )

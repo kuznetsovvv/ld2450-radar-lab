@@ -26,8 +26,8 @@ class LabTests(unittest.TestCase):
             value = json.load(response)
 
         self.assertEqual(value["config"]["schema"], "ld2450-radar-config/1")
-        self.assertEqual(value["summary"]["track_count"], 3)
-        self.assertEqual(value["summary"]["classified_count"], 3)
+        self.assertEqual(value["summary"]["track_count"], 4)
+        self.assertEqual(value["summary"]["classified_count"], 4)
 
     def test_config_endpoint_validates_and_re_evaluates(self):
         config = default_config().to_dict()
@@ -48,6 +48,7 @@ class LabTests(unittest.TestCase):
             ("/", b"Mounting view"),
             ("/app.js", b"view-range"),
             ("/styles.css", b".fov-wedge"),
+            ("/synthetic-atomic-frames.csv", b"wall_iso,t_ms,dt_ms"),
         ):
             with urlopen(f"{self.base_url}{path}") as response:
                 self.assertIn(expected, response.read())

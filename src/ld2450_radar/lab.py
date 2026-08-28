@@ -13,7 +13,7 @@ from .classification import classify_track
 from .contract import RadarConfig
 from .ingest import AtomicDataset, parse_atomic_csv
 from .model import Frame
-from .synthetic import default_config, demo_frames
+from .synthetic import default_config, demo_csv_text, demo_frames
 from .tracker import track_frames
 
 
@@ -121,15 +121,19 @@ class LabHandler(BaseHTTPRequestHandler):
             self._json(self.state.evaluate())
             return
         path = "index.html" if self.path in ("/", "/index.html") else self.path.lstrip("/")
-        if path not in {"index.html", "app.js", "styles.css"}:
+        if path not in {"index.html", "app.js", "styles.css", "synthetic-atomic-frames.csv"}:
             self.send_error(HTTPStatus.NOT_FOUND)
             return
-        resource = files("ld2450_radar").joinpath("web", path)
-        content = resource.read_bytes()
+        if path == "synthetic-atomic-frames.csv":
+            content = demo_csv_text().encode("utf-8")
+        else:
+            resource = files("ld2450_radar").joinpath("web", path)
+            content = resource.read_bytes()
         content_type = {
             "index.html": "text/html; charset=utf-8",
             "app.js": "text/javascript; charset=utf-8",
             "styles.css": "text/css; charset=utf-8",
+            "synthetic-atomic-frames.csv": "text/csv; charset=utf-8",
         }[path]
         self.send_response(HTTPStatus.OK)
         self.send_header("Content-Type", content_type)

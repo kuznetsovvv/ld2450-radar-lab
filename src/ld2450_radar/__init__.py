@@ -4,7 +4,7 @@ from .contract import RadarConfig, load_config, save_config
 from .ingest import AtomicDataset, parse_atomic_csv
 from .model import Detection, Frame, Track, TrackPoint
 from .portals import BoxPortal, SectorPortal
-from .synthetic import default_config, demo_frames
+from .synthetic import default_config, demo_csv_text, demo_frames
 from .tracker import StreamingTracker, TrackerConfig, track_frames
 
 __all__ = [
@@ -24,6 +24,7 @@ __all__ = [
     "TrackerConfig",
     "classify_track",
     "default_config",
+    "demo_csv_text",
     "demo_frames",
     "load_config",
     "parse_atomic_payload",

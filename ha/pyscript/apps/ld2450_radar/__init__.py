@@ -46,8 +46,10 @@ def _publish(events):
 
 def _reload_config():
     global _runtime
+    global _last_frame_wall
     config = _read_config(CONFIG_PATH)
     _runtime = make_runtime(config)
+    _last_frame_wall = 0.0
     state.set(
         EVENT_ENTITY,
         "ready",

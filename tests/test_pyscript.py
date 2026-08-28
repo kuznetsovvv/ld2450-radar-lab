@@ -139,6 +139,28 @@ class PyscriptRuntimeTests(unittest.TestCase):
 
         self.assertEqual(namespace["_last_frame_wall"], 0.0)
 
+    def test_reload_clears_stale_idle_marker(self):
+        module = load_runtime()
+        sys.modules["ld2450_radar_runtime"] = module
+        namespace = {
+            "pyscript": types.SimpleNamespace(app_config={}),
+            "state_trigger": passthrough_decorator,
+            "time_trigger": passthrough_decorator,
+            "service": passthrough_decorator,
+            "pyscript_executor": lambda function: function,
+            "state": StateStub(),
+            "event": EventStub(),
+            "log": LogStub(),
+        }
+        source = APP_PATH.read_text(encoding="utf-8")
+        exec(compile(source, str(APP_PATH), "exec"), namespace)
+        namespace["_read_config"] = lambda _path: default_config().to_dict()
+        namespace["_last_frame_wall"] = 123.0
+
+        namespace["_reload_config"]()
+
+        self.assertEqual(namespace["_last_frame_wall"], 0.0)
+
 
 if __name__ == "__main__":
     unittest.main()

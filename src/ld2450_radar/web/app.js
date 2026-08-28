@@ -278,6 +278,17 @@ document.querySelectorAll(".tab").forEach(tab => tab.addEventListener("click", (
 document.querySelector("#show-raw").addEventListener("change", renderRadar);
 document.querySelector("#show-filtered").addEventListener("change", renderRadar);
 document.querySelector("#load-frames").addEventListener("click", () => document.querySelector("#frame-file").click());
+document.querySelector("#load-example").addEventListener("click", async () => {
+  try {
+    setStatus("Loading example");
+    const response = await fetch("/synthetic-atomic-frames.csv");
+    const content = await response.text();
+    state.data = await request("/api/frames", {method: "POST", headers: {"Content-Type": "text/csv", "X-File-Name": "synthetic-atomic-frames.csv"}, body: content});
+    render();
+  } catch (error) {
+    setStatus(error.message, true);
+  }
+});
 document.querySelector("#frame-file").addEventListener("change", async event => {
   const file = event.target.files[0];
   if (!file) return;
