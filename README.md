@@ -80,7 +80,7 @@ You do not need the CSV logger for live operation.
 
 ## Status
 
-Private review prototype. The tracker core includes a
+Experimental prototype. The tracker core includes a
 constant-velocity Kalman filter and exact global assignment for the LD2450's
 maximum of three simultaneous detections. Synthetic tests deliberately swap
 slot numbers and introduce observation gaps because LD2450 target slots are not
